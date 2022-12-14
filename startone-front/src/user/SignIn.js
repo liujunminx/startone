@@ -11,19 +11,12 @@ import {
 } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import axios from 'axios'
+import Copyright from "../components/Copyright";
 
-function Copyright(props) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright @ '}
-            <Link color="inherit" href="#">
-                liujunminx@gmail.com
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    )
-}
+const client = axios.create({
+    baseURL: 'http://localhost:9999/api'
+})
 
 const theme = createTheme()
 
@@ -32,7 +25,7 @@ export default function SignIn(){
         event.preventDefault()
         const data = new FormData(event.currentTarget)
         console.log({
-            email: data.get('email'),
+            username: data.get('username'),
             password: data.get('password')
         })
     }
@@ -58,10 +51,10 @@ export default function SignIn(){
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
+                            id="username"
+                            label="Username"
+                            name="username"
+                            autoComplete="username"
                             autoFocus
                         />
                         <TextField
@@ -93,7 +86,7 @@ export default function SignIn(){
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link href={"/sign-up"} variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>
