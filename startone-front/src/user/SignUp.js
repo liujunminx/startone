@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Copyright from "../components/Copyright";
+import {useState} from "react";
 const theme = createTheme()
 
 export default function SignUp(){
@@ -22,6 +23,38 @@ export default function SignUp(){
             username: data.get('username'),
             email: data.get('email'),
             password: data.get('password')
+        })
+    }
+
+    const [input, setInput] = useState({
+        username: '',
+        password: '',
+        confirmPassword:''
+    })
+
+    const [error, setError] = useState({
+        username: '',
+        password: '',
+        confirmPassword:''
+    })
+
+    const onInputChange = e => {
+        const {name, value} = e.target
+        setInput(prevState => ({
+            ...prevState,
+            [name]: value
+        }))
+    }
+
+    const validateInput = e => {
+        let {name, value} = e.target
+        setError(prevState => {
+            const stateObj = { ...prevState, [name]: ''}
+
+            switch (name){
+                case "username":
+
+            }
         })
     }
 
@@ -45,12 +78,16 @@ export default function SignUp(){
                     </Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
                         <TextField
+                            required
+                            fullWidth
                             autoComplete="given-name"
                             name="username"
                             id="username"
-                            required
-                            fullWidth
                             label="Username"
+                            value={input.username}
+                            onChange={onInputChange}
+                            onBlur={validateInput}
+                            helperText=""
                             autoFocus
                         />
                         <TextField
@@ -70,6 +107,16 @@ export default function SignUp(){
                             label="Password"
                             type="password"
                             autoComplete="new-password"
+                            sx={{mt:1}}
+                        />
+                        <TextField
+                            required
+                            fullWidth
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            label="Confirm Password"
+                            type="password"
+                            autoComplete="confirm-password"
                             sx={{mt:1}}
                         />
                         <Button
