@@ -11,50 +11,41 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Copyright from "../components/Copyright";
-import {useState} from "react";
+import {useForm} from "react-hook-form"
+import * as Yup from "yup"
+import {yupResolver} from "@hookform/resolvers/yup";
+import axios from "axios";
+
+
 const theme = createTheme()
 
 export default function SignUp(){
 
-    const handleSubmit = (event) => {
+    const formSchema = Yup.object().shape({
+        username: Yup.string()
+            .required("Username is required"),
+        email: Yup.string().email()
+            .required("Email is required"),
+        password: Yup.string()
+            .required("Password is required"),
+        confirmPassword: Yup.string()
+            .required("Confirm Password is required")
+            .oneOf([Yup.ref("password")], "Passwords do not match")
+    })
+
+    const { register, handleSubmit, formState: {errors}} = useForm({
+        mode: "onTouched",
+        resolver: yupResolver(formSchema)
+    })
+
+    const onSubmit = (data, event) => {
         event.preventDefault()
-        const data = new FormData(event.currentTarget)
-        console.log({
-            username: data.get('username'),
-            email: data.get('email'),
-            password: data.get('password')
-        })
-    }
-
-    const [input, setInput] = useState({
-        username: '',
-        password: '',
-        confirmPassword:''
-    })
-
-    const [error, setError] = useState({
-        username: '',
-        password: '',
-        confirmPassword:''
-    })
-
-    const onInputChange = e => {
-        const {name, value} = e.target
-        setInput(prevState => ({
-            ...prevState,
-            [name]: value
-        }))
-    }
-
-    const validateInput = e => {
-        let {name, value} = e.target
-        setError(prevState => {
-            const stateObj = { ...prevState, [name]: ''}
-
-            switch (name){
-                case "username":
-
-            }
+        axios.post("/user/sign-up", {
+            username: data.username,
+            email: data.email,
+            password: data.password
+        }).then(response => {
+            console.log('data', response)
         })
     }
 
@@ -76,48 +67,54 @@ export default function SignUp(){
                     <Typography component="h1" variant="h5">
                         Sign Up
                     </Typography>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
+                    <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{mt: 3}}>
                         <TextField
                             required
                             fullWidth
                             autoComplete="given-name"
-                            name="username"
                             id="username"
                             label="Username"
-                            value={input.username}
-                            onChange={onInputChange}
-                            onBlur={validateInput}
-                            helperText=""
+                            {...register("username")}
                             autoFocus
+                            error={!!errors.username}
+                            helperText={errors.username && errors.username.message}
                         />
+                        {/*{errors.username?.type === 'required' && <p role="alert">Please enter your Username</p>}*/}
                         <TextField
                             required
                             fullWidth
                             id="email"
-                            name="email"
+                            type="email"
                             label="Email Address"
                             autoComplete="email"
                             sx={{mt:1}}
+                            {...register("email")}
+                            error={!!errors.email}
+                            helperText={errors.email && errors.email.message}
                         />
                         <TextField
                             required
                             fullWidth
                             id="password"
-                            name="password"
                             label="Password"
                             type="password"
                             autoComplete="new-password"
                             sx={{mt:1}}
+                            {...register("password")}
+                            error={!!errors.password}
+                            helperText={errors.password && errors.password.message}
                         />
                         <TextField
                             required
                             fullWidth
                             id="confirmPassword"
-                            name="confirmPassword"
                             label="Confirm Password"
                             type="password"
                             autoComplete="confirm-password"
                             sx={{mt:1}}
+                            {...register("confirmPassword")}
+                            error={!!errors.confirmPassword}
+                            helperText={errors.confirmPassword && errors.confirmPassword.message}
                         />
                         <Button
                             type="submit"

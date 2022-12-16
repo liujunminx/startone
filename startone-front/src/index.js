@@ -4,6 +4,24 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Router from "./router";
 
+import axios from "axios"
+
+axios.defaults.baseURL = "http://localhost:9999/api"
+axios.defaults.headers.common['Authorization'] = "BEARER TOKEN"
+axios.defaults.headers.post['Content-Type'] = 'application/json'
+
+axios.interceptors.request.use(request => {
+    return request
+}, error => {
+    return Promise.reject(error)
+})
+
+axios.interceptors.response.use(response => {
+    return response
+}, error => {
+    return Promise.reject(error)
+})
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

@@ -11,12 +11,7 @@ import {
 } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import axios from 'axios'
 import Copyright from "../components/Copyright";
-
-const client = axios.create({
-    baseURL: 'http://localhost:9999/api'
-})
 
 const theme = createTheme()
 
