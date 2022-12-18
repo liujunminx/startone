@@ -17,9 +17,9 @@ axios.interceptors.request.use(request => {
 })
 
 axios.interceptors.response.use(response => {
-    return response
+    return response.data
 }, error => {
-    return Promise.reject(error)
+    return Promise.reject(error.response.data)
 })
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

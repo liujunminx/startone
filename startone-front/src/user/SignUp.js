@@ -15,11 +15,14 @@ import {useForm} from "react-hook-form"
 import * as Yup from "yup"
 import {yupResolver} from "@hookform/resolvers/yup";
 import axios from "axios";
+import {useState} from "react";
 
 
 const theme = createTheme()
 
 export default function SignUp(){
+
+    const [errMsg, setErrMsg] = useState()
 
     const formSchema = Yup.object().shape({
         username: Yup.string()
@@ -44,8 +47,13 @@ export default function SignUp(){
             username: data.username,
             email: data.email,
             password: data.password
-        }).then(response => {
-            console.log('data', response)
+        }).then(data => {
+            console.log(data)
+        }).catch(error => {
+            if (error.status === 409)
+                setErrMsg(error.message)
+            else
+                setErrMsg(null)
         })
     }
 
@@ -116,6 +124,7 @@ export default function SignUp(){
                             error={!!errors.confirmPassword}
                             helperText={errors.confirmPassword && errors.confirmPassword.message}
                         />
+                        {errMsg && <p style={{color: "red"}}>{errMsg}</p>}
                         <Button
                             type="submit"
                             fullWidth
