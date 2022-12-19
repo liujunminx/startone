@@ -1,0 +1,16 @@
+server:
+  port: 9999
+  servlet:
+    context-path: /api
+  error:
+    include-message: always
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mysql://localhost:3306/startone
+    username: root
+    password: r00tme
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
