@@ -50,10 +50,7 @@ export default function SignUp(){
         }).then(data => {
             console.log(data)
         }).catch(error => {
-            if (error.status === 409)
-                setErrMsg(error.message)
-            else
-                setErrMsg(null)
+            setErrMsg(error.message)
         })
     }
 
@@ -87,7 +84,6 @@ export default function SignUp(){
                             error={!!errors.username}
                             helperText={errors.username && errors.username.message}
                         />
-                        {/*{errors.username?.type === 'required' && <p role="alert">Please enter your Username</p>}*/}
                         <TextField
                             required
                             fullWidth
@@ -124,7 +120,7 @@ export default function SignUp(){
                             error={!!errors.confirmPassword}
                             helperText={errors.confirmPassword && errors.confirmPassword.message}
                         />
-                        {errMsg && <p style={{color: "red"}}>{errMsg}</p>}
+                        {errMsg && <Typography style={{color: "red"}} align={"center"}>{errMsg}</Typography>}
                         <Button
                             type="submit"
                             fullWidth

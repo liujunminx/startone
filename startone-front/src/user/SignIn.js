@@ -12,16 +12,42 @@ import {
 import Checkbox from '@mui/material/Checkbox';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Copyright from "../components/Copyright";
+import {useState} from "react";
+import Home from "../home/Home";
+
+import * as Yup from "yup"
+import {useForm} from "react-hook-form";
+import {yupResolver} from "@hookform/resolvers/yup";
+import axios from "axios";
 
 const theme = createTheme()
 
 export default function SignIn(){
-    const handleSubmit = (event) => {
+
+    const [errMsg, setErrMsg] = useState()
+
+    const formSchema = Yup.object().shape({
+        usernameOrEmail: Yup.string()
+            .required("Username or email address is required"),
+        password: Yup.string()
+            .required("Password is required")
+    })
+
+    const { register, handleSubmit, formState: {errors}} = useForm({
+        mode: "onTouched",
+        resolver: yupResolver(formSchema)
+    })
+
+    const onSubmit = (data, event) => {
         event.preventDefault()
-        const data = new FormData(event.currentTarget)
-        console.log({
-            username: data.get('username'),
-            password: data.get('password')
+        axios.post("/sign-in", {
+            usernameOrEmail: data.usernameOrEmail,
+            password: data.password
+        }).then(data => {
+            if (data)
+                return (<Home></Home>)
+            else
+                setErrMsg("Incorrect username or password")
         })
     }
 
@@ -41,16 +67,19 @@ export default function SignIn(){
                     <Typography component="h1" variant="h5">
                         Sign In
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
+                    <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{mt: 1}}>
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            id="username"
-                            label="Username"
-                            name="username"
-                            autoComplete="username"
+                            id="usernameOrEmail"
+                            label="Username or email address"
+                            name="usernameOrEmail"
+                            autoComplete="usernameOrEmail"
                             autoFocus
+                            {...register("usernameOrEmail")}
+                            error={!!errors.usernameOrEmail}
+                            helperText={errors.usernameOrEmail && errors.usernameOrEmail.message}
                         />
                         <TextField
                             margin="normal"
@@ -61,7 +90,11 @@ export default function SignIn(){
                             type="password"
                             name="password"
                             autoComplete="current-password"
+                            {...register("password")}
+                            error={!!errors.password}
+                            helperText={errors.password && errors.password.message}
                         />
+                        {errMsg && <Typography style={{color: "red"}} align={"center"}>{errMsg}</Typography>}
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
                             label="Remember me"

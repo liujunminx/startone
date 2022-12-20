@@ -6,9 +6,10 @@ import Router from "./router";
 
 import axios from "axios"
 
-axios.defaults.baseURL = "http://localhost:9999/api"
-axios.defaults.headers.common['Authorization'] = "BEARER TOKEN"
-axios.defaults.headers.post['Content-Type'] = 'application/json'
+// axios.defaults.baseURL = "http://localhost:9999/api"
+// axios.defaults.headers.common['Authorization'] = "BEARER TOKEN"
+// axios.defaults.headers.post['Content-Type'] = 'application/json'
+// axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*'
 
 axios.interceptors.request.use(request => {
     return request
@@ -19,7 +20,10 @@ axios.interceptors.request.use(request => {
 axios.interceptors.response.use(response => {
     return response.data
 }, error => {
-    return Promise.reject(error.response.data)
+    console.log(error)
+    // if (error.response.status === 500)
+    //     return (<Error500></Error500>)
+    return Promise.reject(error.response)
 })
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
