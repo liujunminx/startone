@@ -40,7 +40,7 @@ export default function SignIn(){
 
     const onSubmit = (data, event) => {
         event.preventDefault()
-        axios.post("/sign-in", {
+        axios.post("/user/sign-in", {
             usernameOrEmail: data.usernameOrEmail,
             password: data.password
         }).then(data => {
