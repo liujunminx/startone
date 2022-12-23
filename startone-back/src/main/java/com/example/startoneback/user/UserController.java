@@ -1,7 +1,10 @@
 package com.example.startoneback.user;
 
 import com.example.startoneback.exception.UserExistsException;
+import com.example.startoneback.util.JwtUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping("/sign-in")
-    public boolean signIn(@RequestBody SignInUser user){
+    public String signIn(@RequestBody SignInUser user){
         return userService.authenticateUser(user.getUsernameOrEmail(), user.getPassword());
     }
 }

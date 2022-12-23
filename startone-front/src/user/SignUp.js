@@ -16,6 +16,8 @@ import * as Yup from "yup"
 import {yupResolver} from "@hookform/resolvers/yup";
 import axios from "axios";
 import {useState} from "react";
+import SignIn from "./SignIn";
+import { useNavigate } from "react-router-dom";
 
 
 const theme = createTheme()
@@ -23,6 +25,7 @@ const theme = createTheme()
 export default function SignUp(){
 
     const [errMsg, setErrMsg] = useState()
+    const navigate = useNavigate()
 
     const formSchema = Yup.object().shape({
         username: Yup.string()
@@ -48,7 +51,7 @@ export default function SignUp(){
             email: data.email,
             password: data.password
         }).then(data => {
-            console.log(data)
+            navigate("/sign-in")
         }).catch(error => {
             setErrMsg(error.message)
         })

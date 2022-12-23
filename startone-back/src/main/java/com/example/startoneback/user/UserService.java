@@ -2,6 +2,7 @@ package com.example.startoneback.user;
 
 import com.example.startoneback.exception.ServerInternalException;
 import com.example.startoneback.exception.UserExistsException;
+import com.example.startoneback.util.JwtUtil;
 import jakarta.annotation.Resource;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.stereotype.Service;
@@ -45,14 +46,20 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public boolean authenticateUser(String usernameOrEmail, String inputPass){
+    /**
+     * If the user pass authentication, return token
+     * @param usernameOrEmail
+     * @param inputPass
+     * @return
+     */
+    public String authenticateUser(String usernameOrEmail, String inputPass){
         User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
         if (user == null){
-            return false;
+            return null;
         }else {
             String salt = user.getSalt();
-            String calculatedHash = getEncryptedPassword(user.getPassword(), salt);
-            return calculatedHash.equals(user.getPassword());
+            String calculatedHash = getEncryptedPassword(inputPass, salt);
+            return calculatedHash.equals(user.getPassword())? JwtUtil.generateToken(user): null;
         }
     }
 

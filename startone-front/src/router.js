@@ -12,13 +12,13 @@ const route = createBrowserRouter([
         element: <SignIn/>
     },
     {
+        path: '/sign-up',
+        element: <SignUp/>
+    },
+    {
         path: '/',
         element: <Home/>
     },
-    {
-        path: '/sign-up',
-        element: <SignUp/>
-    }
 ])
 
 export default function Router(){

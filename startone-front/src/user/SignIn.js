@@ -3,8 +3,7 @@ import {
     Box, Button,
     Container,
     createTheme,
-    CssBaseline, FormControlLabel, Grid,
-    Link,
+    CssBaseline, FormControlLabel, Grid, Link,
     TextField,
     ThemeProvider,
     Typography,
@@ -13,18 +12,20 @@ import Checkbox from '@mui/material/Checkbox';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Copyright from "../components/Copyright";
 import {useState} from "react";
-import Home from "../home/Home";
 
 import * as Yup from "yup"
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme()
 
 export default function SignIn(){
 
     const [errMsg, setErrMsg] = useState()
+
+    const navigate = useNavigate()
 
     const formSchema = Yup.object().shape({
         usernameOrEmail: Yup.string()
@@ -44,10 +45,13 @@ export default function SignIn(){
             usernameOrEmail: data.usernameOrEmail,
             password: data.password
         }).then(data => {
-            if (data)
-                return (<Home></Home>)
-            else
+            if (data){
+                localStorage.setItem("token", data)
+                navigate("/")
+            }
+            else{
                 setErrMsg("Incorrect username or password")
+            }
         })
     }
 

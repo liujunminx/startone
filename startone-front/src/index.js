@@ -5,11 +5,9 @@ import reportWebVitals from './reportWebVitals';
 import Router from "./router";
 
 import axios from "axios"
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 axios.defaults.baseURL = "http://localhost:3000/api"
-// axios.defaults.headers.common['Authorization'] = "BEARER TOKEN"
-// axios.defaults.headers.post['Content-Type'] = 'application/json'
-// axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*'
 
 axios.interceptors.request.use(request => {
     return request
