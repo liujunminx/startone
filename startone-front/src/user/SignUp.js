@@ -50,7 +50,7 @@ export default function SignUp(){
             username: data.username,
             email: data.email,
             password: data.password
-        }).then(data => {
+        }).then(response => {
             navigate("/sign-in")
         }).catch(error => {
             setErrMsg(error.message)

@@ -44,9 +44,8 @@ export default function SignIn(){
         axios.post("/user/sign-in", {
             usernameOrEmail: data.usernameOrEmail,
             password: data.password
-        }).then(data => {
-            if (data){
-                localStorage.setItem("token", data)
+        }).then(response => {
+            if (response){
                 navigate("/")
             }
             else{

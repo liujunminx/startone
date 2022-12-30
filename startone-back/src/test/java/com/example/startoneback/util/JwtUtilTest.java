@@ -29,5 +29,8 @@ class JwtUtilTest {
         String token = JwtUtil.generateToken(user);
         Map<String, Claim> stringClaimMap = JwtUtil.verifyToken(token);
         log.info("verifying token: {}", stringClaimMap);
+        String errorToken = "error";
+        Map<String, Claim> errorClaim = JwtUtil.verifyToken(errorToken);
+        log.info("verifying error token: {}", errorClaim);
     }
 }

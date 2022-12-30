@@ -1,7 +1,12 @@
 import Header from "../components/Header";
+import {Component} from "react";
+import axios from "axios";
 
-export default function Home() {
-    return(
-        <Header></Header>
-    )
+class Home extends Component {
+
+    render() {
+        return <Header></Header>;
+    }
 }
+
+export default Home;
